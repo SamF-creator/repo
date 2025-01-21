@@ -1,8 +1,15 @@
 from django.http import HttpResponse
+from rest_framework import permissions
 from django.shortcuts import render
+from rest_framework.decorators import api_view
+from rest_framework import generics
 from rest_framework import viewsets
-from .models import Menu, Booking
-from .serializers import MenuSerializer, BookingSerializer
+from .models import Menu, Booking, User
+from .serializers import MenuSerializer, BookingSerializer, UserSerializer
+from rest_framework.permissions import IsAuthenticated
+
+
+# Create your views here. 
 
 class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
@@ -12,9 +19,7 @@ class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
 
-
-def sayHello(request):
- return HttpResponse('Hello World')
-
-def index(request):
-   return render(request, 'index.html', {})
+class UserViewSet(viewsets.ModelViewSet):
+   queryset = User.objects.all()
+   serializer_class = UserSerializer
+   permission_classes = [permissions.IsAuthenticated]
